@@ -1,0 +1,28 @@
+<h2>Invités de <%= @event.title %></h2>
+
+<% if @attendances.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Utilisateur</th>
+        <th>Inscrit le</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @attendances.each do |att| %>
+        <tr>
+          <td><%= att.user.email %></td>
+          <td><%= l(att.created_at, format: :short) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Aucun participant pour l’instant.</p>
+<% end %>
+
+<p style="margin-top:1rem;">
+  <%= link_to "Modifier l’événement", edit_event_path(@event) %> |
+  <%= button_to "Supprimer l’événement", event_path(@event), method: :delete, data: { confirm: "Supprimer ?" } %> |
+  <%= link_to "Retour à l’événement", @event %>
+</p>

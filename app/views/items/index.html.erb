@@ -1,0 +1,20 @@
+<% if params[:success] %>
+  <p style="color: green">Paiement réussi ! 🎉</p>
+<% elsif params[:canceled] %>
+  <p style="color: red">Paiement annulé.</p>
+<% end %>
+
+<% content_for :title, "Items" %>
+
+<h1>Items</h1>
+
+<div id="items">
+  <% @items.each do |item| %>
+    <%= render item %>
+    <p>
+      <%= link_to "Show this item", item %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New item", new_item_path %>

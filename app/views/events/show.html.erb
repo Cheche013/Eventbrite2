@@ -8,3 +8,35 @@
 
   <%= button_to "Destroy this event", @event, method: :delete %>
 </div>
+
+<%# Affichage du prix %>
+<p>
+  <% if @event.is_free? %>
+    <strong>Gratuit 🎁</strong>
+  <% else %>
+    <strong>Prix :</strong> <%= number_to_currency(@event.price_eur, unit: "€") %>
+  <% end %>
+</p>
+
+<% if user_signed_in? %>
+  <% if current_user == @event.admin %>
+    <p>
+      <%= link_to "Mon espace événement", event_attendances_path(@event) %> |
+      <%= link_to "Modifier", edit_event_path(@event) %> |
+      <%= button_to "Supprimer", event_path(@event), method: :delete, data: { confirm: "Supprimer cet événement ?" } %>
+    </p>
+  <% elsif @event.participant?(current_user) %>
+    <p>Tu participes déjà à cet événement ✅</p>
+  <% else %>
+    <%= button_to (@event.is_free? ? "Rejoindre l’événement" : "Acheter mon billet"),
+                  event_attendances_path(@event),
+                  method: :post,
+                  data: { turbo: false } %>
+  <% end %>
+<% else %>
+  <p><%= link_to "Connecte-toi pour rejoindre l’événement", new_user_session_path %></p>
+<% end %>
+
+<%# Messages de retour Stripe (si tu veux afficher ceux des routes success/cancel dans layouts) %>
+<% if notice %><p style="color: green"><%= notice %></p><% end %>
+<% if alert %><p style="color: red"><%= alert %></p><% end %>
