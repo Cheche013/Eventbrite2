@@ -65,6 +65,6 @@ end
 gem "devise", "~> 4.9"
 
 gem "dotenv-rails", "~> 3.1"
-gem "stripe", "~> 15.4"
+gem "stripe", "~> 15.5"
 gem "table_print", "~> 1.5"
 gem "faker", "~> 3.5"
