@@ -5,7 +5,7 @@
   </p>
 
   <p>
-    <strong>Duration:</strong>
+    <strong>Duration (min):</strong>
     <%= event.duration %>
   </p>
 
@@ -21,7 +21,7 @@
 
   <p>
     <strong>Price:</strong>
-    <%= event.price %>
+    <%= event.is_free? ? 'Gratuit' : number_to_currency(event.price_eur, unit: '€') %>
   </p>
 
   <p>
@@ -30,8 +30,8 @@
   </p>
 
   <p>
-    <strong>User:</strong>
-    <%= event.user.email %>
+    <strong>Organisateur:</strong>
+    <%= event.admin&.email %>
   </p>
 
 </div>

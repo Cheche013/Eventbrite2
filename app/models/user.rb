@@ -7,4 +7,5 @@ class User < ApplicationRecord
   has_many :events, dependent: :nullify
   has_many :attendances, dependent: :destroy
   has_many :joined_events, through: :attendances, source: :event
+  has_one_attached :avatar
 end
