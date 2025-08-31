@@ -1,27 +1,45 @@
-<%= form_with(model: item) do |form| %>
-  <% if item.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <%= form_with(model: item, html: { multipart: true }) do |form| %>
+          <% if item.errors.any? %>
+            <div class="alert alert-danger">
+              <h2 class="h5 mb-2"><%= pluralize(item.errors.count, "erreur") %> ont empêché l’enregistrement :</h2>
+              <ul class="mb-0">
+                <% item.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-      <ul>
-        <% item.errors.each do |error| %>
-          <li><%= error.full_message %></li>
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="form-floating">
+                <%= form.text_field :name, class: "form-control", placeholder: "Nom de l’item" %>
+                <%= form.label :name, "Nom" %>
+              </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <div class="form-floating">
+                <%= form.number_field :price_cents, class: "form-control", placeholder: "Prix (centimes)", min: 0 %>
+                <%= form.label :price_cents, "Prix (centimes)" %>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Photo</label>
+              <%= form.file_field :photo, accept: "image/*", class: "form-control" %>
+            </div>
+
+            <div class="col-12">
+              <%= form.submit class: "btn btn-primary w-100" %>
+            </div>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
-  <% end %>
-
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
   </div>
-
-  <div>
-    <%= form.label :price_cents, style: "display: block" %>
-    <%= form.number_field :price_cents %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
-<% end %>
+</div>

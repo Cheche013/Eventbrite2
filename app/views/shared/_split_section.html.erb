@@ -1,0 +1,22 @@
+<section class="container py-5">
+  <div class="row align-items-center g-5 mb-5">
+    <div class="col-12 col-md-6">
+      <h2 class="h3">Organise des événements inoubliables</h2>
+      <p class="text-secondary">Crée tes événements en quelques clics : titre, lieu, date, billets… Partage et suis les inscriptions en temps réel.</p>
+      <%= link_to "Voir un exemple", new_event_path, class: "btn btn-primary" %>
+    </div>
+    <div class="col-12 col-md-6">
+      <%= safe_image_tag "ui_kit/concert.webp", fallback: "ui_kit/live-music.jpg", alt: "Illustration organisation", class: "img-fluid rounded" %>
+    </div>
+  </div>
+  <div class="row align-items-center g-5">
+    <div class="col-12 col-md-6 order-md-2">
+      <h2 class="h3">Découvre des événements près de toi</h2>
+      <p class="text-secondary">Filtre par ville, catégorie ou date. Enregistre tes favoris et invite tes amis.</p>
+      <%= link_to "Parcourir les événements", events_path, class: "btn btn-outline-light" %>
+    </div>
+    <div class="col-12 col-md-6 order-md-1">
+      <%= safe_image_tag "ui_kit/ville-nocturne.png", fallback: "ui_kit/live-music.jpg", alt: "Vue d’une ville de nuit", class: "img-fluid rounded" %>
+    </div>
+  </div>
+</section>

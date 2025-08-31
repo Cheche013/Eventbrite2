@@ -1,12 +1,9 @@
-<% content_for :title, "Editing event" %>
-
-<h1>Editing event</h1>
-
-<%= render "form", event: @event %>
-
-<br>
-
-<div>
-  <%= link_to "Show this event", @event %> |
-  <%= link_to "Back to events", events_path %>
+<% content_for :title, "Modifier l’événement" %>
+<div class="container py-4">
+  <h1 class="h3 mb-4">Modifier l’événement</h1>
+  <%= render "form", event: @event %>
+  <div class="mt-3 d-flex gap-3">
+    <%= link_to "Voir l’événement", @event, class: "link-light" %>
+    <%= link_to "Retour à la liste", events_path, class: "link-light" %>
+  </div>
 </div>

@@ -1,11 +1,38 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, @item.name %>
 
-<%= render @item %>
+<div class="container py-4">
+  <% if notice.present? %>
+    <div class="alert alert-success" role="alert"><%= notice %></div>
+  <% end %>
 
-<div>
-  <%= link_to "Edit this item", edit_item_path(@item) %> |
-  <%= link_to "Back to items", items_path %>
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-lg-7">
+      <div class="card">
+        <% if @item.photo.attached? %>
+          <%= image_tag @item.photo, class: "card-img-top", alt: @item.name, style: "max-height: 360px; object-fit: cover;" %>
+        <% else %>
+          <%= image_tag "ui_kit/live-music.jpg", class: "card-img-top", alt: @item.name, style: "max-height: 360px; object-fit: cover;" %>
+        <% end %>
+      </div>
+    </div>
 
-  <%= button_to "Destroy this item", @item, method: :delete %>
-  <%= button_to "Acheter avec Stripe", checkout_path(item_id: @item.id), method: :post, data: { turbo: false } %>
+    <div class="col-12 col-lg-5">
+      <div class="card">
+        <div class="card-body">
+          <h1 class="h4 card-title mb-2"><%= @item.name %></h1>
+          <p class="text-secondary mb-4"><%= number_to_currency(@item.price_eur, unit: "€") %></p>
+
+          <div class="d-grid gap-2 mb-3">
+            <%= button_to "Acheter avec Stripe", checkout_path(item_id: @item.id), method: :post, data: { turbo: false }, class: "btn btn-primary" %>
+          </div>
+
+          <div class="d-flex flex-wrap gap-2">
+            <%= link_to "Modifier", edit_item_path(@item), class: "btn btn-outline-light" %>
+            <%= button_to "Supprimer", @item, method: :delete, class: "btn btn-danger", data: { confirm: "Supprimer cet item ?" } %>
+            <%= link_to "Retour", items_path, class: "btn btn-link link-light" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

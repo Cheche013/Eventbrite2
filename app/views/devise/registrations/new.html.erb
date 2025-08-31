@@ -1,31 +1,40 @@
-<h2>Sign up</h2>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-5">
+      <div class="card shadow-sm">
+        <div class="card-body p-4 p-md-5">
+          <header class="mb-4 text-center">
+            <h1 class="h3 mb-1">Créer un compte</h1>
+            <p class="text-secondary mb-0">Rejoins la communauté et organise tes événements.</p>
+          </header>
 
-<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-<%= form_with(model: resource, scope: resource_name, url: registration_path(resource_name), class: " w-400 p-4 rounded shadow bg-white") do |f| %>
- <%= render "devise/shared/error_messages", resource: resource %>
+          <%= form_with(model: resource, scope: resource_name, url: registration_path(resource_name)) do |f| %>
+            <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="mb-3 field">
-    <%= f.label :email, class: "form-label" %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-text" %>
+            <div class="form-floating mb-3">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control", placeholder: "name@example.com" %>
+              <%= f.label :email, "Adresse email" %>
+            </div>
+
+            <div class="form-floating mb-3">
+              <%= f.password_field :password, autocomplete: "new-password", class: "form-control", placeholder: "Mot de passe" %>
+              <%= f.label :password, "Mot de passe" %>
+            </div>
+
+            <div class="form-floating mb-4">
+              <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control", placeholder: "Confirme ton mot de passe" %>
+              <%= f.label :password_confirmation, "Confirmation du mot de passe" %>
+            </div>
+
+            <%= f.submit "Créer mon compte", class: "btn btn-primary w-100" %>
+
+            <p class="text-center text-secondary mt-4 mb-0">
+              Déjà un compte ?
+              <%= link_to "Se connecter", new_session_path(resource_name), class: "link-light" %>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="mb-3 field">
-    <%= f.label :password, class: "form-label" %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-  </div>
-
-  <div class="mb-3 field">
-    <%= f.label :password_confirmation, class: "form-label" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
-  </div>
-
-  <div class="actions btn btn-primary">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
 </div>
-
-<%= render "devise/shared/links" %>

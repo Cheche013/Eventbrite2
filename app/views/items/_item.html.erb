@@ -1,12 +1,16 @@
-<div id="<%= dom_id item %>">
-  <p>
-    <strong>Name:</strong>
-    <%= item.name %>
-  </p>
-
-  <p>
-    <strong>Price cents:</strong>
-    <%= item.price_cents %>
-  </p>
-
+<div id="<%= dom_id item %>" class="card h-100">
+  <% if item.photo.attached? %>
+    <%= image_tag item.photo, class: "card-img-top", alt: item.name, style: "height: 180px; object-fit: cover;" %>
+  <% else %>
+    <%= image_tag "ui_kit/live-music.jpg", class: "card-img-top", alt: item.name, style: "height: 180px; object-fit: cover;" %>
+  <% end %>
+  <div class="card-body">
+    <h5 class="card-title mb-1" title="<%= item.name %>"><%= truncate(item.name, length: 40) %></h5>
+    <p class="card-text text-secondary mb-0">
+      <%= number_to_currency(item.price_eur, unit: "€") %>
+    </p>
+  </div>
+  <div class="card-footer bg-transparent border-0">
+    <%= link_to "Voir", item, class: "btn btn-outline-light w-100 btn-sm" %>
+  </div>
 </div>

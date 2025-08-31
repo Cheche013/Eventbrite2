@@ -1,48 +1,49 @@
-<p style="color: green"><%= notice %></p>
+<div class="row g-4 align-items-start">
+  <div class="col-12 col-lg-7">
+    <% if @event.photo.attached? %>
+      <%= image_tag @event.photo, alt: @event.title, class: "img-fluid rounded" %>
+    <% else %>
+      <%= safe_image_tag "ui_kit/concert.webp", fallback: "ui_kit/live-music.jpg", alt: @event.title, class: "img-fluid rounded" %>
+    <% end %>
+  </div>
+  <div class="col-12 col-lg-5">
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title h3"><%= @event.title %></h1>
+        <p class="text-secondary mb-2">
+          <%= l(@event.start_date, format: :long) if @event.start_date %>
+          <% if @event.duration.present? %> • <%= @event.duration %> min<% end %>
+        </p>
+        <p class="mb-3"><%= simple_format(@event.description.to_s) %></p>
+        <p class="mb-4">
+          <span class="badge bg-primary">
+            <%= @event.is_free? ? "Gratuit" : number_to_currency(@event.price_eur, unit: "€") %>
+          </span>
+        </p>
 
-<%= render @event %>
-
-<div>
-  <%= link_to "Edit this event", edit_event_path(@event) %> |
-  <%= link_to "Back to events", events_path %>
-
-  <%= button_to "Destroy this event", @event, method: :delete %>
+        <% if user_signed_in? %>
+          <% if current_user == @event.admin %>
+            <div class="d-flex gap-2">
+              <%= link_to "Espace participants", event_attendances_path(@event), class: "btn btn-outline-light" %>
+              <%= link_to "Modifier", edit_event_path(@event), class: "btn btn-outline-light" %>
+              <%= button_to "Supprimer", event_path(@event), class: "btn btn-danger", method: :delete, data: { confirm: "Supprimer cet événement ?" } %>
+            </div>
+          <% elsif @event.participant?(current_user) %>
+            <p>Tu participes déjà à cet événement ✅</p>
+          <% else %>
+            <%= button_to (@event.is_free? ? "Rejoindre l’événement" : "Acheter mon billet"),
+                          event_attendances_path(@event),
+                          method: :post,
+                          data: { turbo: false },
+                          class: "btn btn-primary w-100" %>
+          <% end %>
+        <% else %>
+          <%= link_to "Connecte-toi pour rejoindre l’événement", new_user_session_path, class: "btn btn-outline-light w-100" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="mt-3">
+      <%= link_to "Retour à la liste", events_path, class: "link-light" %>
+    </div>
+  </div>
 </div>
-
-<%# Affichage du prix %>
-<p>
-  <% if @event.is_free? %>
-    <strong>Gratuit 🎁</strong>
-  <% else %>
-    <strong>Prix :</strong> <%= number_to_currency(@event.price_eur, unit: "€") %>
-  <% end %>
-</p>
-
-<% if user_signed_in? %>
-  <% if current_user == @event.admin %>
-    <p>
-      <%= link_to "Mon espace événement", event_attendances_path(@event) %> |
-      <%= link_to "Modifier", edit_event_path(@event) %> |
-      <%= button_to "Supprimer", event_path(@event), method: :delete, data: { confirm: "Supprimer cet événement ?" } %>
-    </p>
-  <% elsif @event.participant?(current_user) %>
-    <p>Tu participes déjà à cet événement ✅</p>
-  <% else %>
-    <%= button_to (@event.is_free? ? "Rejoindre l’événement" : "Acheter mon billet"),
-                  event_attendances_path(@event),
-                  method: :post,
-                  data: { turbo: false } %>
-  <% end %>
-<% else %>
-  <p><%= link_to "Connecte-toi pour rejoindre l’événement", new_user_session_path %></p>
-<% end %>
-
-<%# Messages de retour Stripe (si tu veux afficher ceux des routes success/cancel dans layouts) %>
-<% if notice %><p style="color: green"><%= notice %></p><% end %>
-<% if alert %><p style="color: red"><%= alert %></p><% end %>
-
-<% if @event.photo.attached? %>
-  <%= image_tag @event.photo, alt: @event.title %>
-<% else %>
-  <p>Aucune photo pour cet événement.</p>
-<% end %>

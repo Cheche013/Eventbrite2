@@ -1,18 +1,37 @@
 <p style="color: green"><%= notice %></p>
 
-<% content_for :title, "Events" %>
+<% content_for :title, "Événements" %>
 
-<h1>Events</h1>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="mb-0">Événements</h1>
+  <% if user_signed_in? %>
+    <%= link_to "Créer un événement", new_event_path, class: "btn btn-primary" %>
+  <% end %>
+  </div>
 
-<div id="events">
+<div class="row row-cols-1 row-cols-md-3 g-4">
   <% @events.each do |event| %>
-    <%= render event %>
-    <p>
-      <%= link_to "Show this event", event %>
-    </p>
+    <div class="col">
+      <div class="card h-100">
+        <% if event.photo&.attached? %>
+          <%= image_tag event.photo, class: "card-img-top", alt: event.title, style: "height: 200px; object-fit: cover;" %>
+        <% else %>
+          <%= safe_image_tag "ui_kit/live-music.jpg", fallback: "ui_kit/concert.webp", class: "card-img-top", alt: event.title, style: "height: 200px; object-fit: cover;" %>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= event.title %></h5>
+          <p class="card-text text-secondary">
+            <%= l(event.start_date, format: :long) if event.start_date %>
+          </p>
+          <p class="card-text"><%= truncate(event.description.to_s, length: 120) %></p>
+          <span class="badge bg-primary">
+            <%= event.is_free? ? "Gratuit" : number_to_currency(event.price_eur, unit: "€") %>
+          </span>
+        </div>
+        <div class="card-footer bg-transparent border-0">
+          <%= link_to "Voir l’événement", event, class: "btn btn-outline-light w-100" %>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
-
-<% if user_signed_in? %>
-<%= link_to "New event", new_event_path %>
-<% end %>
